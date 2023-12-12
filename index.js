@@ -4,7 +4,7 @@ const cors = require("cors");
 const { v4 } = require("uuid");
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -39,12 +39,13 @@ app.get("/books/:id", (req, res) => {
 
 // Add a new book
 app.post("/books", (req, res) => {
-  const { title, pages, author } = req.body;
+  const { title, pages, author, img } = req.body;
   const newBook = {
     id: v4(),
     title,
     pages,
     author,
+    img,
   };
   books.push(newBook);
 
@@ -57,7 +58,7 @@ app.post("/books", (req, res) => {
 // Update a book
 app.put("/books/:id", (req, res) => {
   const id = req.params.id;
-  const { title, pages, author } = req.body;
+  const { title, pages, author, img } = req.body;
 
   const idx = books.findIndex((b) => b.id === id);
 
@@ -67,6 +68,7 @@ app.put("/books/:id", (req, res) => {
       title: title || books[idx].title,
       pages: pages || books[idx].pages,
       author: author || books[idx].author,
+      img: img || books[idx].img,
     };
     books[idx] = updatedBook;
     res.json({
@@ -90,6 +92,6 @@ app.delete("/books/:id", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
